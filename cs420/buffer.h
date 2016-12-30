@@ -1,12 +1,12 @@
-#ifndef BUFFER_H
-#define BUFFER_H
 /** buffer.h
-  * A class to hold characters, strip whitespace and comments, 
+  * A class to hold characters, strip whitespace and comments,
   * and unread a character after a read
   * @author Andrew Stratmann
   * @author Dr. Bob Matthews
   * @version 3 October 2016
   */
+#ifndef BUFFER_H
+#define BUFFER_H
 
 #include <stdlib.h>
 
@@ -33,23 +33,23 @@ class Buffer
     * @param filename The filepath of the source file
     */
   Buffer(char *filename);
-  
+
   /** Remove a buffer object
     */
   ~Buffer();
-  
+
   /** Get the next character on the buffer
     * @return The next character
     */
   char next_char();
-  
+
   /** Unreads a character from the buffer
     * @param c The character to be placed back on the buffer
     */
   void unread_char (char c);
 
-  
-  
+
+
  private:
 
   static const int MAX_BUFFER_SIZE = 1024;
@@ -59,14 +59,14 @@ class Buffer
   int current_position;
   bool is_full;
   bool first_time;
- 
+
   // The stream object for the source file.
   ifstream source_file;
-  
+
   /* If something catastrophic happens in the buffer, print
      an error message and then call this method to exit. */
   void buffer_fatal_error() const;
-  
+
   /** Determines if a character is whitespace
     * @param c The character in question
     * @return The whitespace status of c
@@ -84,7 +84,7 @@ class Buffer
   {
     return ((c >= 'a' && c <= 'z')|(c >= 'A' && c <= 'Z')|(c >= '0' && c <= '9'))?true:false;
   }
-  
+
   /** Add a character to the buffer
     * @param d The character to be added
     */

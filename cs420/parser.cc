@@ -1,10 +1,10 @@
 /** An implementation of parser.h
   * @author Andrew Stratmann
-  * @version 14 November 2016
+  * @version 15 December 2016
   */
 #include "parser.h"
 
-Parser::Parser(Scanner *the_scanner) 
+Parser::Parser(Scanner *the_scanner)
 {
   /* Initialize the parser. */
   lex = the_scanner;
@@ -20,7 +20,7 @@ Parser::Parser(Scanner *the_scanner)
   allocator = new Register_Allocator();
 }
 
-Parser::~Parser() 
+Parser::~Parser()
 {
   /* Delete the parser. */
   if (lex != NULL) {
@@ -83,19 +83,19 @@ bool Parser::parse_program()
    // Predict (program identifier ; DECL_LIST BLOCK ;) == {program}
 
    // Match keyword program, first symbol on RHS
-   if (word->get_token_type() == TOKEN_KEYWORD 
+   if (word->get_token_type() == TOKEN_KEYWORD
        && static_cast<KeywordToken *>(word)->get_attribute() == KW_PROGRAM) {
 
      /* ADVANCE - Notice that we only delete a token on an ADVANCE,
        and, if we ADVANCE, it is the ADVANCE code that is responsible
        for getting the next token.
      */
-     delete word; 
+     delete word;
      word = lex->next_token();
 
      // Match identifier, 2nd symbol on RHS
-     if (word->get_token_type() == TOKEN_ID) {		
-        
+     if (word->get_token_type() == TOKEN_ID) {
+
         //get the name of the identifier and install it
         //in the symbol table
         string *id_name = static_cast<IdToken *>(word)->get_attribute();
@@ -109,14 +109,14 @@ bool Parser::parse_program()
         delete id_name;
 
         // ADVANCE
-        delete word; 
+        delete word;
         word = lex->next_token();
 
 	// Match semicolon(;), 3rd symbol on RHS
-	if (word->get_token_type() == TOKEN_PUNC 
+	if (word->get_token_type() == TOKEN_PUNC
 	    && static_cast<PuncToken *>(word)->get_attribute() == PUNC_SEMI) {
 	  // ADVANCE
-	  delete word; 
+	  delete word;
 	  word = lex->next_token();
 
 	  /* Match DECL_LIST, 4th bymbol on RHS.  This is an ACTION,
@@ -125,11 +125,11 @@ bool Parser::parse_program()
 	     point.
 	  */
 	  if (parse_decl_list()) {
-	    
+
 	    // Match BLOCK, 5th on RHS - ACTION
 	    if (parse_block()) {
-	      
-	      // Match semicolon(;), 6th and last on RHS -  
+
+	      // Match semicolon(;), 6th and last on RHS -
 	      if (word->get_token_type() == TOKEN_PUNC
 		  && static_cast<PuncToken *>(word)->get_attribute() == PUNC_SEMI) {
 		// ADVANCE
@@ -153,7 +153,7 @@ bool Parser::parse_program()
         }
 
 		return true;
-		
+
 		// We failed to match the second semicolon
 	      } else {
 		string *expected = new string ("';'");
@@ -162,7 +162,7 @@ bool Parser::parse_program()
     //cout << "Parse of program fails" << endl;
 		return false;
 	      }
-	      
+
 	      /* We failed to parse BLOCK.  Don't print an error here;
 		 instead, print the error when you discover it,
 		 i.e. when you are trying to advance. */
@@ -170,13 +170,13 @@ bool Parser::parse_program()
         //cout << "Parse of program fails" << endl;
 	      return false;
 	    }
-	    
+
 	    // We failed to parse DECL_LIST
 	  } else {
       //cout << "Parse of program fails" << endl;
 	    return false;
 	  }
-	  
+
 	  // We failed to match the first semicolon
 	} else {
 	  string *expected = new string ("';'");
@@ -184,7 +184,7 @@ bool Parser::parse_program()
     //cout << "Parse of program fails" << endl;
 	  return false;
 	}
-	
+
 	// We failed to match an identifier
      } else {
        string *expected = new string ("identifier");
@@ -192,7 +192,7 @@ bool Parser::parse_program()
        //cout << "Parse of program fails" << endl;
        return false;
      }
-     
+
      // We failed to match the keyword program
    } else {
      string *expected = new string ("keyword program");
@@ -200,7 +200,7 @@ bool Parser::parse_program()
      //cout << "Parse of program fails" << endl;
      return false;
    }
-   
+
    /* We shouldn't reach this statement, but it is here as a defensive
       programming measure. */
    //cout << "Parse of program fails" << endl;
@@ -210,11 +210,11 @@ bool Parser::parse_program()
 
 bool Parser::parse_decl_list()
 {
-   /* DECL_LIST -> VARIABLE_DECL_LIST PROCEDURE_DECL_LIST 
+   /* DECL_LIST -> VARIABLE_DECL_LIST PROCEDURE_DECL_LIST
 
-      Predict(VARIABLE_DECL_LIST PROCEDURE_DECL_LIST) 
-        = First(VARIABLE_DECL_LIST) 
-       union First (PROCEDURE_DECL_LIST) 
+      Predict(VARIABLE_DECL_LIST PROCEDURE_DECL_LIST)
+        = First(VARIABLE_DECL_LIST)
+       union First (PROCEDURE_DECL_LIST)
        union Follow (DECL_LIST) = {identifier, procedure, begin}
 
        Note that we don't actually need to check the predict set
@@ -230,16 +230,16 @@ bool Parser::parse_decl_list()
 bool Parser::parse_variable_decl_list()
 {
     //The predict set contains identifier and lambda
-    //first check for an identifier, and if not, 
+    //first check for an identifier, and if not,
     //take lambda transition and return true.
-    
+
     if(word->get_token_type() == TOKEN_ID)
     {
         //take the first transition.
         if(parse_variable_decl())
         {
             //first part of the transition succeded, continue
-            if(word->get_token_type() == TOKEN_PUNC && 
+            if(word->get_token_type() == TOKEN_PUNC &&
                 static_cast<PuncToken *>(word)->get_attribute() == PUNC_SEMI)
             {
                 delete word;
@@ -290,7 +290,7 @@ bool Parser::parse_variable_decl()
     //identifier is the only token in the predict set
 
     expr_type std_type_type = GARBAGE_T;
-    
+
     if(word->get_token_type() == TOKEN_ID)
     {
         if(parse_identifier_list())
@@ -349,7 +349,7 @@ bool Parser::parse_variable_decl()
 bool Parser::parse_procedure_decl_list()
 {
     //Predict is procedure and lambda
-    
+
     if(word->get_token_type() == TOKEN_KEYWORD &&
         static_cast<KeywordToken *>(word)->get_attribute() == KW_PROCEDURE)
     {
@@ -403,7 +403,7 @@ bool Parser::parse_procedure_decl_list()
 bool Parser::parse_identifier_list()
 {
     //predict is only identifier
-    
+
     if(word->get_token_type() == TOKEN_ID)
     {
         //Perform the semantic analysis
@@ -416,7 +416,7 @@ bool Parser::parse_identifier_list()
         {
             stab.install(id_name, current_env, UNKNOWN_T);
         }
-        
+
 
         //get next token and continue
         delete word;
@@ -448,7 +448,7 @@ bool Parser::parse_identifier_list()
 bool Parser::parse_standard_type(expr_type &standard_type_type)
 {
     //must see int or bool for a successful parse
-    
+
     if(word->get_token_type() == TOKEN_KEYWORD &&
         static_cast<KeywordToken *>(word)->get_attribute() == KW_INT)
     {
@@ -488,7 +488,7 @@ bool Parser::parse_standard_type(expr_type &standard_type_type)
 bool Parser::parse_identifier_list_prm()
 {
     //predict consists of , and lambda
-    
+
     if(word->get_token_type() == TOKEN_PUNC &&
         static_cast<PuncToken *>(word)->get_attribute() == PUNC_COMMA)
     {
@@ -597,7 +597,7 @@ bool Parser::parse_block()
 bool Parser::parse_procedure_decl()
 {
     //procedure is the only thing in the predict set
-    
+
     if(word->get_token_type() == TOKEN_KEYWORD &&
         static_cast<KeywordToken *>(word)->get_attribute() == KW_PROCEDURE)
     {
@@ -643,7 +643,7 @@ bool Parser::parse_procedure_decl()
                             {
                                 /* Semantic Analysis */
                                 current_env = main_env;
-                                
+
                                 //parse succeeds
                                 //cout << "Parse of proceduredecl succeeds" << endl;
                                 return true;
@@ -670,7 +670,7 @@ bool Parser::parse_procedure_decl()
                         //cout << "Parse of proceduredecl fails" << endl;
                         return false;
                     }
-                    
+
                 }
                 else
                 {
@@ -738,7 +738,7 @@ bool Parser::parse_procedure_args()
 bool Parser::parse_formal_parm_list()
 {
     //identifier is the only thing in the predict set
-    
+
     if(word->get_token_type() == TOKEN_ID)
     {
         /* Semantic Analysis */
@@ -770,7 +770,7 @@ bool Parser::parse_formal_parm_list()
                 {
                     /* Semantic Analysis */
                     stab.update_type(std_type_type);
-                    
+
                     if(parse_formal_parm_list_hat())
                     {
                         //parse succeeds
@@ -820,7 +820,7 @@ bool Parser::parse_formal_parm_list()
 bool Parser::parse_formal_parm_list_hat()
 {
     //predict set contains ; and lambda
-    
+
     if(word->get_token_type() == TOKEN_PUNC &&
         static_cast<PuncToken *>(word)->get_attribute() == PUNC_SEMI)
     {
@@ -851,7 +851,7 @@ bool Parser::parse_formal_parm_list_hat()
 bool Parser::parse_stmt_list()
 {
     //predict set contains id, if, while, print | ;
-    
+
     if((word->get_token_type() == TOKEN_KEYWORD &&
         (static_cast<KeywordToken *>(word)->get_attribute() == KW_IF ||
         static_cast<KeywordToken *>(word)->get_attribute() == KW_WHILE ||
@@ -861,7 +861,7 @@ bool Parser::parse_stmt_list()
         if(parse_stmt())
         {
             //check for semicolon
-            if(word->get_token_type() == TOKEN_PUNC && 
+            if(word->get_token_type() == TOKEN_PUNC &&
                 static_cast<PuncToken *>(word)->get_attribute() == PUNC_SEMI)
             {
                 //found ; consume token
@@ -937,7 +937,7 @@ bool Parser::parse_stmt_list_prm()
         if(parse_stmt())
         {
             //check for semi
-            if(word->get_token_type() == TOKEN_PUNC && 
+            if(word->get_token_type() == TOKEN_PUNC &&
                 static_cast<PuncToken *>(word)->get_attribute() == PUNC_SEMI)
             {
                 //consume token and continue
@@ -971,7 +971,7 @@ bool Parser::parse_stmt_list_prm()
             //cout << "Parse of stmtlistprm failed" << endl;
             return false;
         }
-            
+
     }
     else
     {
@@ -1058,7 +1058,7 @@ bool Parser::parse_stmt()
                 //type error
                 type_error(stab.get_type(id_name, current_env), ahpctail_type);
             }
-    
+
             //parse succeeds
             //cout << "Parse of stmt succeeded" << endl;
             return true;
@@ -1123,11 +1123,11 @@ bool Parser::parse_ad_hoc_as_pc_tail(expr_type &ad_hoc_as_pc_tail_type)
 
             //move the register value to procedure_name
             e->emit_move(procedure_name, expression_register);
-            
+
             //release the register to the pool
             allocator->deallocate_register(expression_register);
             delete expression;
-            
+
 
             //parse succeeds
             //cout << "Parse of adhocaspctail succeeded" << endl;
@@ -1138,7 +1138,7 @@ bool Parser::parse_ad_hoc_as_pc_tail(expr_type &ad_hoc_as_pc_tail_type)
             //parse of expr failed
             //cout << "Parse of adhocaspctail failed" << endl;
             return false;
-        }   
+        }
     }
     else if(word->get_token_type() == TOKEN_PUNC &&
         static_cast<PuncToken *>(word)->get_attribute() == PUNC_OPEN)
@@ -1199,7 +1199,7 @@ bool Parser::parse_if_stmt()
   if (word->get_token_type() == TOKEN_KEYWORD
       && static_cast<KeywordToken *>(word)->get_attribute() == KW_IF)
   {
-    
+
     advance();
     expr_type expr_type_value = GARBAGE_T;
     Operand *expression;
@@ -1234,7 +1234,7 @@ bool Parser::parse_if_stmt()
           e->emit_move (expression_register, expression->get_m_value());
         }
       }
-      
+
       /* Generate labels of else part (even if it doesn't exist) and
 	    the next statement after the if. */
       string *else_part = e->get_new_label ("else");
@@ -1243,13 +1243,13 @@ bool Parser::parse_if_stmt()
       /* Test the register that holds the value of the expression.  If
 	    it is false, jump to the else part. */
       e->emit_branch (INST_BREZ, expression_register, else_part);
-      
+
       /* We are done with the expresion operand and the register in
 	    which it resides.  Deallocate both. */
       allocator->deallocate_register (expression_register);
       delete expression;
-	
-      
+
+
       if (word->get_token_type() == TOKEN_KEYWORD
 	  && static_cast<KeywordToken *>(word)->get_attribute() == KW_THEN)
       {
@@ -1258,11 +1258,11 @@ bool Parser::parse_if_stmt()
 	      // IR code for then part generated by parse_block().
 	      if (parse_block())
         {
-	  
+
           // IR - Skip over else part
           e->emit_branch (if_done);
           e->emit_label (else_part);
-	  
+
           /* IR - if there is an else part to the if statment, the
           code for the else part code will be generated by
           parse_if_stmt_hat(). */
@@ -1356,7 +1356,7 @@ bool Parser::parse_while_stmt()
             if(word->get_token_type() == TOKEN_KEYWORD &&
                 static_cast<KeywordToken *>(word)->get_attribute() == KW_LOOP)
             {
-                
+
 
                 //load the value of the expression into a register
                 Register *expression_register = NULL;
@@ -1383,8 +1383,8 @@ bool Parser::parse_while_stmt()
 
                 //return the register to the pool
                 allocator->deallocate_register(expression_register);
-                
-                
+
+
 
                 //consume token and continue
                 delete word;
@@ -1397,14 +1397,14 @@ bool Parser::parse_while_stmt()
 
                     //emit the end label
                     e->emit_label(while_bottom);
-                    
+
                     //return the register to the pool
                     if(expression_register->is_inuse())
                     {
                         allocator->deallocate_register(expression_register);
                     }
                     delete expression;
-                    
+
                     //parse succeeds
                     //cout << "Parse of whilstmt succeeded" <<  endl;
                     return true;
@@ -1513,7 +1513,7 @@ bool Parser::parse_print_stmt()
 bool Parser::parse_expr_list()
 {
     //predict set is id, num, (, +, -, not, lambda
-    if(word->get_token_type() == TOKEN_ID || 
+    if(word->get_token_type() == TOKEN_ID ||
         word->get_token_type() == TOKEN_NUM ||
         (word->get_token_type() == TOKEN_PUNC &&
         static_cast<PuncToken *>(word)->get_attribute() == PUNC_OPEN) ||
@@ -1549,7 +1549,7 @@ bool Parser::parse_actual_parm_list()
 {
     //predict set is id, num, (, +, -, not
 
-    if(word->get_token_type() == TOKEN_ID || 
+    if(word->get_token_type() == TOKEN_ID ||
         word->get_token_type() == TOKEN_NUM ||
         (word->get_token_type() == TOKEN_PUNC &&
         static_cast<PuncToken *>(word)->get_attribute() == PUNC_OPEN) ||
@@ -1560,7 +1560,7 @@ bool Parser::parse_actual_parm_list()
         static_cast<KeywordToken *>(word)->get_attribute() == KW_NOT))
     {
         expr_type expr_type_res = GARBAGE_T;
-        // just to satisfy the compiler, no 
+        // just to satisfy the compiler, no
         Operand *expression;
         if(parse_expr(expr_type_res, expression))
         {
@@ -1572,7 +1572,7 @@ bool Parser::parse_actual_parm_list()
                     expr_type_res);
             }
             actual_parm_position++;
-    
+
             if(parse_actual_parm_list_hat())
             {
                 //parse succeeds
@@ -1637,7 +1637,7 @@ bool Parser::parse_actual_parm_list_hat()
 bool Parser::parse_expr(expr_type &expr_type_result, Operand *&op)
 {
     //predict is id, num, (, +, -, not
-    if(word->get_token_type() == TOKEN_ID || 
+    if(word->get_token_type() == TOKEN_ID ||
         word->get_token_type() == TOKEN_NUM ||
         (word->get_token_type() == TOKEN_PUNC &&
         static_cast<PuncToken *>(word)->get_attribute() == PUNC_OPEN) ||
@@ -1683,7 +1683,7 @@ bool Parser::parse_expr(expr_type &expr_type_result, Operand *&op)
             //parse of simpleexpr failed
             //cout << "Parse of expr failed" << endl;
             return false;
-        }            
+        }
     }
     else
     {
@@ -1694,7 +1694,7 @@ bool Parser::parse_expr(expr_type &expr_type_result, Operand *&op)
         return false;
     }
 
-    
+
 }
 
 bool Parser::parse_expr_hat(expr_type &expr_hat_type, Operand *&op)
@@ -1741,7 +1741,7 @@ bool Parser::parse_expr_hat(expr_type &expr_hat_type, Operand *&op)
                 else
                 {
                     e->emit_move(left_op_reg, op->get_m_value());
-                }   
+                }
             }
 
             //the left hand value is in left_op_reg
@@ -1823,7 +1823,7 @@ bool Parser::parse_expr_hat(expr_type &expr_hat_type, Operand *&op)
             e->emit_label(expr_true); // unnecessary
             e->emit_move(left_op_reg, 1); // expr is true
             e->emit_branch(expr_end); // jump past the false part
-            
+
 
             //emit the code for the false part
             e->emit_label(expr_false);
@@ -1859,7 +1859,7 @@ bool Parser::parse_expr_hat(expr_type &expr_hat_type, Operand *&op)
 bool Parser::parse_simple_expr(expr_type &simple_expr_type, Operand *&op)
 {
     //predict set is id, num, (, +, -, not
-    if(word->get_token_type() == TOKEN_ID || 
+    if(word->get_token_type() == TOKEN_ID ||
         word->get_token_type() == TOKEN_NUM ||
         (word->get_token_type() == TOKEN_PUNC &&
         static_cast<PuncToken *>(word)->get_attribute() == PUNC_OPEN) ||
@@ -1978,7 +1978,7 @@ bool Parser::parse_simple_expr_prm(expr_type &simple_expr_prm_type, Operand *&op
             delete op;
             op = new Operand(OPTYPE_REGISTER, left_op_reg);
 
-            
+
 
             //output the appropriate instruction
             switch(right_op->get_type())
@@ -2063,7 +2063,7 @@ bool Parser::parse_simple_expr_prm(expr_type &simple_expr_prm_type, Operand *&op
 bool Parser::parse_term(expr_type &term_type, Operand *&op)
 {
     //predict set is id, num, (, +, -, not
-    if(word->get_token_type() == TOKEN_ID || 
+    if(word->get_token_type() == TOKEN_ID ||
         word->get_token_type() == TOKEN_NUM ||
         (word->get_token_type() == TOKEN_PUNC &&
         static_cast<PuncToken *>(word)->get_attribute() == PUNC_OPEN) ||
@@ -2120,7 +2120,7 @@ bool Parser::parse_term(expr_type &term_type, Operand *&op)
         //cout << "Parse of term failed" << endl;
         return false;
     }
-        
+
 }
 
 bool Parser::parse_term_prm(expr_type &term_prm0_type, Operand *&left_op)
@@ -2151,9 +2151,9 @@ bool Parser::parse_term_prm(expr_type &term_prm0_type, Operand *&left_op)
     if (parse_factor(factor_type, right_op))
     {
 
-      /* At this point, we can generate code for 
+      /* At this point, we can generate code for
 
-	 "right_op operation left_op". 
+	 "right_op operation left_op".
 
 	 First we need to make sure the left operand (which
 	 was passed to us as a parm) is in a register.  If the left op
@@ -2162,7 +2162,7 @@ bool Parser::parse_term_prm(expr_type &term_prm0_type, Operand *&left_op)
 	 there.
       */
       Register *left_op_reg;
-      if (left_op->get_type() == OPTYPE_REGISTER) 
+      if (left_op->get_type() == OPTYPE_REGISTER)
       {
 	    // The left operand is already in a register.
 	    left_op_reg = left_op->get_r_value();
@@ -2208,15 +2208,15 @@ bool Parser::parse_term_prm(expr_type &term_prm0_type, Operand *&left_op)
       switch (right_op->get_type())
       {
         case OPTYPE_REGISTER:
-	      e->emit_2addr (instruction, left_op->get_r_value(), 
+	      e->emit_2addr (instruction, left_op->get_r_value(),
 		       right_op->get_r_value());
 	      break;
         case OPTYPE_IMMEDIATE:
-	      e->emit_2addr (instruction, left_op->get_r_value(), 
+	      e->emit_2addr (instruction, left_op->get_r_value(),
 		       right_op->get_i_value());
 	      break;
         case OPTYPE_MEMORY:
-	      e->emit_2addr (instruction, left_op->get_r_value(), 
+	      e->emit_2addr (instruction, left_op->get_r_value(),
 		       right_op->get_m_value());
 	      break;
         default:
@@ -2224,7 +2224,7 @@ bool Parser::parse_term_prm(expr_type &term_prm0_type, Operand *&left_op)
       }
       /* Clean up.
 
-	  We are done with the right Operand object. 
+	  We are done with the right Operand object.
       */
       if (right_op->get_type() == OPTYPE_REGISTER)
       {
@@ -2264,11 +2264,11 @@ bool Parser::parse_term_prm(expr_type &term_prm0_type, Operand *&left_op)
     {
       return false;
     }
-  
+
   }
   else
   { // -> \lambda
-    
+
     /* Semantic action */
     term_prm0_type = NO_T;
 
@@ -2278,9 +2278,9 @@ bool Parser::parse_term_prm(expr_type &term_prm0_type, Operand *&left_op)
 
 bool Parser::parse_factor(expr_type &factor0_type, Operand *&op)
 {
-  if (word->get_token_type() == TOKEN_ID) 
+  if (word->get_token_type() == TOKEN_ID)
   {
-    
+
     /* Semantic Analysis */
     string *id_name = new string(*static_cast<IdToken *>(word)->get_attribute());
     expr_type id_type = GARBAGE_T;
@@ -2311,7 +2311,7 @@ bool Parser::parse_factor(expr_type &factor0_type, Operand *&op)
 
        Make a new Operand object to represent the literal we just
        found.
-       
+
        There is a slight complication here.  NumToken attributes are
        stored as strings in the token, but we want them as ints in the
        operand.  We do the conversion here. */
@@ -2328,9 +2328,9 @@ bool Parser::parse_factor(expr_type &factor0_type, Operand *&op)
 	     && static_cast<PuncToken *>(word)->get_attribute() == PUNC_OPEN)
   {
     advance();
-    
+
     // Parse the expression between the (), discover the expression
-    // type, and create an Operand object for it.    
+    // type, and create an Operand object for it.
     expr_type expr_type_result = GARBAGE_T;
     if (parse_expr(expr_type_result, op))
     {
@@ -2392,7 +2392,7 @@ bool Parser::parse_factor(expr_type &factor0_type, Operand *&op)
       {
 
 	    /* semantic action */
-	    if (sign_type != factor1_type) 
+	    if (sign_type != factor1_type)
         {
 	      type_error (sign_type, factor1_type);
 	    }
@@ -2409,7 +2409,7 @@ bool Parser::parse_factor(expr_type &factor0_type, Operand *&op)
 	    }
         else
         {
-	  
+
 	      // make sure operand is in a register
 	      Register *op_register;
 	      if (op->get_type() == OPTYPE_REGISTER)
@@ -2420,7 +2420,7 @@ bool Parser::parse_factor(expr_type &factor0_type, Operand *&op)
           {
 
 	        op_register = allocator->allocate_register();
-	    
+
 	        // Emit instruction to move operand into register
 	        if (op->get_type() == OPTYPE_IMMEDIATE)
             {
@@ -2432,7 +2432,7 @@ bool Parser::parse_factor(expr_type &factor0_type, Operand *&op)
 	            // move RN, #memory_location_name
 	            e->emit_move (op_register, op->get_m_value());
 	        }
-	
+
 	        // The operand is now in register op_register.  Make a new
 	        // operand object to represent it.
 	        delete op;

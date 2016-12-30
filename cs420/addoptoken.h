@@ -1,3 +1,9 @@
+/** Addoptoken.h
+  * A class for TruPL additive operation tokens
+  * @author Andrew Stratmann
+  * @author Bob Matthews
+  * @version 16 December 2016
+  */
 #ifndef ADDOPTOKEN_H
 #define ADDOPTOKEN_H
 

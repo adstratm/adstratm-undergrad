@@ -1,3 +1,9 @@
+/** numtoken.h
+  * A class for numerical tokens in TruPL
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #ifndef NUMTOKEN_H
 #define NUMTOKEN_H
 

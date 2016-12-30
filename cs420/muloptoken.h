@@ -1,3 +1,9 @@
+/** muloptoken.h
+  * A class for multiplicative operater tokens in TruPL
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #ifndef MULOPTOKEN_H
 #define MULOPTOKEN_H
 

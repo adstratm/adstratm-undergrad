@@ -1,3 +1,9 @@
+/** operand.cc
+  * An implementation of operand.h
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #include "operand.h"
 
 Operand::Operand (const op_type_type o_type, const int val)
@@ -62,7 +68,7 @@ int Operand::get_i_value() const
   default:
     bad_op_request("int value of undefined type operand");
     break;
-  }    
+  }
   return OPTYPE_GARBAGE_I_VALUE;
 }
 
@@ -135,4 +141,3 @@ void Operand::bad_op_request (const char *message) const
   cout << "Operand error: requested " << message;
   return;
 }
-      

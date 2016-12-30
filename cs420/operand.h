@@ -1,3 +1,10 @@
+/** operand.h
+  * A class for operands in TruPL
+  * Used to generate immediate representation in TrAL
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #ifndef OPERAND_H
 #define OPERAND_H
 
@@ -7,7 +14,7 @@
 using namespace std;
 
 /* We will use three types of TrAL operands: immediate,
-   register direct, and memory direct.  
+   register direct, and memory direct.
 */
 typedef enum OPERAND_TYPE {OPTYPE_IMMEDIATE = 900,
 			   OPTYPE_REGISTER  = 901,
@@ -34,7 +41,7 @@ class Operand {
   string *get_m_value() const;
 
  private:
-  
+
   // The type of this operand.
   op_type_type op_type;
 
@@ -49,4 +56,3 @@ class Operand {
 };
 
 #endif
-

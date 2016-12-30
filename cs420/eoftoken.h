@@ -1,3 +1,9 @@
+/** eoftoken.h
+  * A class for TruPL end-of-file tokens
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #ifndef TOKENEOF_H
 #define TOKENEOF_H
 
@@ -18,5 +24,3 @@ class EofToken : public Token
 };
 
 #endif
-
-  

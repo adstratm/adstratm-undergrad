@@ -1,3 +1,9 @@
+/** emitter.cc
+  * An implementation of emitter.h
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #include "emitter.h"
 
 Emitter::Emitter()
@@ -32,7 +38,7 @@ string *Emitter::get_new_label(const char prefix[])
 	delete number;
 	return label;
 }
-	
+
 
 // Convert an int to its string equivalent.  Idea shamelessly
 // stolen from Java.
@@ -58,9 +64,9 @@ void Emitter::emit_move (Register *reg, int immediate)
 	cout << ", #" << immediate << endl;
 }
 
-// move Ri, Rj 
+// move Ri, Rj
 void Emitter::emit_move (Register *reg, Register *regr)
-{	
+{
 	cout << "\t\t" << "move " << " R" << reg->get_num();
 	cout << ", R" << regr->get_num() << endl;
 }

@@ -1,3 +1,9 @@
+/** idtoken.h
+  * A class for identifier tokens in TruPL
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #ifndef IDTOKEN_H
 #define IDTOKEN_H
 

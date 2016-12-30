@@ -1,3 +1,10 @@
+/** emitter.h
+  * An emitter class for generating
+  * IR code in TrAL for TruPL code
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #ifndef EMITTER_H
 #define EMITTER_H
 
@@ -11,26 +18,26 @@
 using namespace std;
 
 // Instruction mnemonics
-typedef enum instruction_type {INST_MOVE = 802, 
+typedef enum instruction_type {INST_MOVE = 802,
 			       INST_ADD =  803,
-			       INST_SUB =  804, 
-			       INST_MUL =  805, 
-			       INST_DIV =  806, 
-			       INST_NEG =  807, 
-			       INST_NOT =  808, 
-			       INST_LEA =  809, 
-			       INST_BRUN = 810, 
+			       INST_SUB =  804,
+			       INST_MUL =  805,
+			       INST_DIV =  806,
+			       INST_NEG =  807,
+			       INST_NOT =  808,
+			       INST_LEA =  809,
+			       INST_BRUN = 810,
 			       INST_BREZ = 811,
-			       INST_BRPO = 812, 
-			       INST_BRNE = 813, 
+			       INST_BRPO = 812,
+			       INST_BRNE = 813,
 			       INST_OUTB = 814,
-			       INST_HALT = 815, 
+			       INST_HALT = 815,
 			       INST_GARBAGE = 899} inst_type;
 class Emitter {
 
 public:
 
-	
+
 
 	Emitter();
 	~Emitter();
@@ -86,7 +93,7 @@ public:
 	// For brun
 	void emit_branch (string *dest);
 	// For the conditional branches with immmediate mode targets.
-	void emit_branch (inst_type inst, 
+	void emit_branch (inst_type inst,
 			  Register *reg, int dest);
 	// For conditional branches that target labels
 	void emit_branch (inst_type inst,
@@ -111,10 +118,9 @@ private:
 	// Convert an unsigned int to the corresponding
 	// ASCII string
 	string *itos (unsigned int i);
-	
+
 	// Emit an instruction mnemonic.
 	void translate_and_emit (inst_type inst);
 
 };
 #endif
-
