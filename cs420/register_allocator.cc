@@ -1,3 +1,9 @@
+/** register_allocator.cc
+  * An implementation of register_allocator.h
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #include "register_allocator.h"
 
 Register_Allocator::Register_Allocator()

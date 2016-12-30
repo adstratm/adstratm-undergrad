@@ -1,3 +1,9 @@
+/** register.h
+  * A class for a TruPRO register
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #ifndef REGISTER_H
 #define REGISTER_H
 
@@ -11,7 +17,7 @@ using namespace std;
 
 // This class describes a single register.  You should not manipulate
 // register objects directly.
-// 
+//
 // Instead, call the methods in the RegisterAllocator class to
 // allocate and deallocate registers.
 class Register
@@ -36,5 +42,3 @@ private:
 
 };
 #endif
-	
-	

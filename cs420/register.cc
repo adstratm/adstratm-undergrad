@@ -1,3 +1,9 @@
+/** register.cc
+  * An implementation of register.h
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #include "register.h"
 
 Register::Register(int num)
@@ -29,4 +35,3 @@ bool Register::is_inuse()
 {
 	return inuse;
 }
-

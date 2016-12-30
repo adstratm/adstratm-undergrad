@@ -1,3 +1,9 @@
+/** punctoken.h
+  * A class for punctuation tokens in TruPL
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #ifndef PUNCTOKEN_H
 #define PUNCTOKEN_H
 

@@ -1,3 +1,9 @@
+/** register_allocator.h
+  * A class for allocating registers in TruPRO machines.
+  * @author Dr. Bob Matthews
+  * @author Andrew Stratmann
+  * @version 16 December 2016
+  */
 #ifndef REGISTER_ALLOCATOR_H
 #define REGISTER_ALLOCATOR_H
 
