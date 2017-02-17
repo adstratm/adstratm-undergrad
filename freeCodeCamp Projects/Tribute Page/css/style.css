@@ -1,0 +1,41 @@
+#maincontent {
+  margin-top: 5%;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+#thompsonimg {
+  width: 100%;
+}
+
+.timeline {
+  margin-left: 13%;
+  margin-right: 13%;
+}
+
+#quotebody {
+  font-family: "Helvetica Neue", Helvetica, Arial, Monospace;
+  font-size: 1.6em;
+  font-weight: 100;
+  margin-top: 3%;
+}
+
+#quoteauthor {
+  font-style: italic;
+  color: #A9A9A9;
+  margin-bottom: 4%;
+  margin-left: 14%;
+}
+
+.endbeg {
+  margin-left: 10%;
+  margin-right: 10%;
+  font-size: 1.8em;
+  font-weight: 600;
+  
+}
+
+#tribtitle {
+  font-size: 3.2em;
+}

@@ -1,0 +1,34 @@
+* {
+  font-family: "Slabo 27px", serif;
+}
+
+#wapp {
+  background-color: beige;
+}
+
+.phead {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.winfo {
+  font-size: 2em;
+}
+
+#titl {
+  font-size: 4em;
+}
+
+#loctext {
+  font-size: 2.5em;
+}
+
+#foot {
+  margin-top: 2%;
+  margin-bottom: 8%;
+}
+
+.btn:focus {
+  outline: none;
+}
+

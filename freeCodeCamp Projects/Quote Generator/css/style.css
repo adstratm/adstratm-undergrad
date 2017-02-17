@@ -1,0 +1,45 @@
+* {
+  
+}
+
+.qbody {
+  padding-left: 4%;
+  padding-right: 4%;
+}
+
+#quotegen {
+  background-color: teal;
+}
+
+#quotepan {
+  text-align: center;
+  margin-top: 15%;
+  margin-bottom: 0%;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+#quotemark {
+  float: left;
+  padding-left: 5%;
+  padding-top: 3%;
+  padding-right: 3%;
+}
+
+#qpara {
+  font-size: 24pt;
+}
+
+#qauth {
+  
+}
+
+#linkbar {
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+#foot {
+  margin-top: 2%;
+  margin-bottom: 20%;
+}
