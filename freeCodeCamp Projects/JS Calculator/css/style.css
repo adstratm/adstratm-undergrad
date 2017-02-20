@@ -1,0 +1,46 @@
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+#calculatorapp {
+  background: linear-gradient(-125deg, red, blue);
+}
+
+#title {
+  text-align: center;
+}
+
+#calcpanel {
+  margin-top: 7%;
+  width: 40%;
+  margin-right: 30%;
+  margin-left: 30%;
+  margin-bottom: 1%;
+  background: linear-gradient(tan, white);
+}
+
+#calccontent {
+  padding: 4%;
+  padding-bottom: 1%;
+}
+
+.calcrow {
+  padding-bottom: 4%;
+}
+
+.zerbut {
+  width: 100%;
+}
+
+#calcdisplay {
+  text-align: right;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+#foot {
+  color: white;
+  padding-bottom: 15%;
+}

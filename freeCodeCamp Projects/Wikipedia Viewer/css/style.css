@@ -1,0 +1,44 @@
+* {
+  
+}
+
+#wviewer {
+  font-family: 'Arsenal', sans-serif;
+  background-color: #EDC9AF;
+}
+
+h1 {
+  font-size: 4em;
+}
+
+a {
+  font-size: 2em;
+}
+
+#randbutton {
+  margin-top: 10%;
+  margin-bottom: 5%;
+}
+
+#searchform {
+  
+}
+
+.cont-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#foot {
+  margin-bottom: 45%;
+}
+
+form {
+  display: inline-block;
+}
+
+.btn:focus {
+  outline: none;
+}
